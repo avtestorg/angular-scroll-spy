@@ -66,18 +66,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "scroll-spy-demo:build"
+            "buildTarget": "scroll-spy-demo:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "scroll-spy-demo:build:production"
+              "buildTarget": "scroll-spy-demo:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "scroll-spy-demo:build"
+            "buildTarget": "scroll-spy-demo:build"
           }
         },
         "test": {
