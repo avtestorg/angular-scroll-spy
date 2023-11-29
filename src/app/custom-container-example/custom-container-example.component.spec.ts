@@ -8,8 +8,8 @@ describe('CustomContainerExampleComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CustomContainerExampleComponent ]
-    })
+    imports: [CustomContainerExampleComponent]
+})
     .compileComponents();
   }));
 

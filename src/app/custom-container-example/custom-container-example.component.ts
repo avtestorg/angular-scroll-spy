@@ -2,10 +2,11 @@ import { Component, OnInit, AfterViewInit, Output, EventEmitter, ElementRef, Vie
 import { ScrollSpyService } from 'ng-spy';
 
 @Component({
-  selector: 'app-custom-container-example',
-  templateUrl: './custom-container-example.component.html',
-  styleUrls: ['./custom-container-example.component.css'],
-  providers: [ScrollSpyService]
+    selector: 'app-custom-container-example',
+    templateUrl: './custom-container-example.component.html',
+    styleUrls: ['./custom-container-example.component.css'],
+    providers: [ScrollSpyService],
+    standalone: true
 })
 export class CustomContainerExampleComponent implements OnInit, AfterViewInit {
   @Output() private activeTarget = new EventEmitter();

@@ -6,8 +6,12 @@ import { ScrollSpyService } from './scroll-spy.service';
 
 @Component({
   template: `
-  <h1 spyOn="test" activeClass="red">test<h1>
-  `
+      <h1 spyOn="test" activeClass="red">test</h1>
+  `,
+  imports: [
+    SpyOnDirective
+  ],
+  standalone: true
 })
 class TestComponent { }
 
@@ -36,11 +40,11 @@ describe('SpyOnDirective', () => {
 
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      declarations: [ TestComponent, SpyOnDirective ],
-      providers: [
+    imports: [TestComponent],
+    providers: [
         { provide: ScrollSpyService, useClass: FakeSpyService }
-      ]
-    })
+    ]
+})
     .createComponent(TestComponent);
     scrollSpyService = TestBed.get(ScrollSpyService);
 

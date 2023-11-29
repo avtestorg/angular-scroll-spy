@@ -8,17 +8,15 @@ import { ContainerComponent } from './container/container.component';
 import { CustomContainerExampleComponent } from './custom-container-example/custom-container-example.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavbarComponent,
-    ContainerComponent,
-    CustomContainerExampleComponent
-  ],
-  imports: [
-    BrowserModule,
-    ScrollSpyModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [AppComponent],
+    imports: [
+        BrowserModule,
+        ScrollSpyModule,
+        NavbarComponent,
+        ContainerComponent,
+        CustomContainerExampleComponent
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

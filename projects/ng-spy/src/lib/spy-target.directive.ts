@@ -3,7 +3,8 @@ import { Directive, ElementRef, Input, OnInit, Renderer2, OnDestroy } from '@ang
 import { ScrollSpyService } from './scroll-spy.service';
 
 @Directive({
-  selector: '[spyTarget]'
+    selector: '[spyTarget]',
+    standalone: true
 })
 export class SpyTargetDirective implements OnInit, OnDestroy {
 
