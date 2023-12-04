@@ -1,6 +1,6 @@
 {
-  "name": "scroll-spy",
-  "version": "4.0.2",
+  "name": "@avtest/scroll-spy",
+  "version": "5.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

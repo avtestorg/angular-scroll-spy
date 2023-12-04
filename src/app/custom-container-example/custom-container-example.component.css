@@ -1,5 +1,5 @@
 :host {
-  height: 200px;
+  height: 2000px;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -9,4 +9,7 @@
 
 .target-5 {
   flex: 0 0 200px;
+}
+.target-7{
+  flex: 0 0 1000px;
 }

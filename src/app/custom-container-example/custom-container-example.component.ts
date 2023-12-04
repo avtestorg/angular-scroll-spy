@@ -12,6 +12,8 @@ export class CustomContainerExampleComponent implements OnInit, AfterViewInit {
   @Output() private activeTarget = new EventEmitter();
   @ViewChild('target5', {static: true}) target5: ElementRef;
   @ViewChild('target6', {static: true}) target6: ElementRef;
+  @ViewChild('target7', {static: true}) target7: ElementRef;
+  @ViewChild('target8', {static: true}) target8: ElementRef;
 
   constructor(private element: ElementRef, private scrollSpyService: ScrollSpyService) { }
 
@@ -26,6 +28,8 @@ export class CustomContainerExampleComponent implements OnInit, AfterViewInit {
   addTargets() {
     this.scrollSpyService.addTarget({ name: 'target-5', element: this.target5 });
     this.scrollSpyService.addTarget({ name: 'target-6', element: this.target6 });
+    this.scrollSpyService.addTarget({ name: 'target-7', element: this.target7 });
+    this.scrollSpyService.addTarget({ name: 'target-8', element: this.target8 });
   }
 
   spyAgain() {
