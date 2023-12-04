@@ -1,6 +1,7 @@
 :host {
   height: 2000px;
   overflow: auto;
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 10px;

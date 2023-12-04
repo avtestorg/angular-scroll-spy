@@ -77,16 +77,19 @@ export class ScrollSpyService {
       return false;
     }
 
-    return this.isElementInsideWindow(scrollContainer, targetHeight, targetOffsetTop);
+    return this.isElementInsideWindow(element, scrollContainer, targetHeight, targetOffsetTop);
   }
 
-  private isElementInsideWindow(scrollContainer: ElementRef, elementHeight: number, elementOffsetTop: number) {
+  private isElementInsideWindow(element: ElementRef, scrollContainer: ElementRef, elementHeight: number, elementOffsetTop: number) {
     const scrollTop = this.windowService.scrollTop;
     const viewportHeight = this.windowService.viewportHeight;
 
     // target bottom edge is below window top edge && target top edge is above window bottom edge
     // if target has a container, don't check for thresholds on the window
     if (scrollContainer != null) {
+      if(element.nativeElement.offsetParent !== scrollContainer?.nativeElement){
+        throw new Error("scroll-container has to be positioned (for example by setting position: relative)")
+      }
       // element has to be inside the portion of the container that is visible
       const containerOffset = this.windowService.getElementOffsetTop(scrollContainer);
       const containerHeight = this.windowService.getElementHeight(scrollContainer);
@@ -100,7 +103,7 @@ export class ScrollSpyService {
         return false;
       }
       // elementOffsetTop is a "global" value so we have to calculate the offset _inside_ the container
-      const relativeElementOffset = elementOffsetTop - containerOffset;
+      const relativeElementOffset = elementOffsetTop;
       // now we need figure out which scrolled _part_ of the container is visible
       return relativeElementOffset + elementHeight > containerScrollTop
         && relativeElementOffset < containerScrollTop + visibleContainerHeight;
