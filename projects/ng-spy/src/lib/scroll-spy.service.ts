@@ -56,7 +56,7 @@ export class ScrollSpyService {
     this.checkActiveElement(this.scrollContainer);
   }
 
-  checkActiveElement(scrollContainer?: ElementRef) {
+  checkActiveElement(scrollContainer: ElementRef = this.scrollContainer) {
     let activeTarget: SpyTarget = null;
 
     for (const target of this.spyTargets) {
