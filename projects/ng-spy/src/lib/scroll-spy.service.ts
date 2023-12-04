@@ -1,8 +1,8 @@
-import { ElementRef, Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { SpyTarget } from './spy-target.model';
-import { WindowService } from './window.service';
+import {ElementRef, Injectable} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {SpyTarget} from './spy-target.model';
+import {WindowService} from './window.service';
 
 @Injectable({
   providedIn: 'root'
@@ -77,15 +77,7 @@ export class ScrollSpyService {
       return false;
     }
 
-
-    const isInsideWindow = this.isElementInsideWindow(scrollContainer, targetHeight, targetOffsetTop);
-
-    const hasContainer = (scrollContainer != null);
-    if (isInsideWindow && !hasContainer) {
-      return true;
-    }
-
-    return isInsideWindow && hasContainer && this.isElementInsideScrollContainer(scrollContainer, targetHeight, targetOffsetTop);
+    return this.isElementInsideWindow(scrollContainer, targetHeight, targetOffsetTop);
   }
 
   private isElementInsideWindow(scrollContainer: ElementRef, elementHeight: number, elementOffsetTop: number) {
@@ -116,16 +108,6 @@ export class ScrollSpyService {
 
     return elementOffsetTop + elementHeight > scrollTop + this.thresholdTop
       && elementOffsetTop < scrollTop + viewportHeight - this.thresholdBottom;
-  }
-
-  private isElementInsideScrollContainer(container: ElementRef, elementHeight: number, elementOffsetTop: number) {
-    const scrollContainerScrollTop = this.windowService.getElementScrollTop(container);
-    const scrollContainerHeight = this.windowService.getElementHeight(container);
-    const elementOffsetTopFromParent = elementOffsetTop - this.windowService.getElementOffsetTop(container);
-
-    // element bottom edge is below container top edge && element top edge is above container bottom edge
-    return elementOffsetTopFromParent + elementHeight > scrollContainerScrollTop + this.thresholdTop
-      && elementOffsetTopFromParent < scrollContainerScrollTop + scrollContainerHeight - this.thresholdBottom;
   }
 
   get activeSpyTarget() {
