@@ -73,7 +73,7 @@ export class ScrollSpyService {
     const targetOffsetTop = this.windowService.getElementOffsetTop(element);
     const targetHeight = this.windowService.getElementHeight(element);
 
-    if (currentActiveElement != null && this.windowService.getElementOffsetTop(currentActiveElement) > targetOffsetTop) {
+    if (currentActiveElement != null && this.windowService.getElementOffsetTop(currentActiveElement) < targetOffsetTop) {
       return false;
     }
 
