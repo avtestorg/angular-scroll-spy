@@ -58,10 +58,11 @@ export class ScrollSpyService {
 
   checkActiveElement(scrollContainer: ElementRef = this.scrollContainer) {
     let activeTarget: SpyTarget = null;
+    let scrollContainerOffset = this.getTotalOffset(scrollContainer);
 
     for (const target of this.spyTargets) {
       const activeElement = activeTarget != null ? activeTarget.element : null;
-      if (this.isElementActive(target.element, scrollContainer, activeElement)) {
+      if (this.isElementActive(target.element, scrollContainer, scrollContainerOffset, activeElement)) {
         activeTarget = target;
       }
     }
@@ -69,7 +70,7 @@ export class ScrollSpyService {
     this.activeSpyTarget$.next(activeTarget ? activeTarget.name : null);
   }
 
-  isElementActive(element: ElementRef, scrollContainer?: ElementRef, currentActiveElement?: ElementRef) {
+  isElementActive(element: ElementRef, scrollContainer?: ElementRef, scrollContainerOffset?: number, currentActiveElement?: ElementRef) {
     const targetOffsetTop = this.windowService.getElementOffsetTop(element);
     const targetHeight = this.windowService.getElementHeight(element);
 
@@ -77,36 +78,45 @@ export class ScrollSpyService {
       return false;
     }
 
-    return this.isElementInsideWindow(element, scrollContainer, targetHeight, targetOffsetTop);
+    return this.isElementInsideWindow(element, scrollContainer, scrollContainerOffset, targetHeight, targetOffsetTop);
   }
 
-  private isElementInsideWindow(element: ElementRef, scrollContainer: ElementRef, elementHeight: number, elementOffsetTop: number) {
+  private getTotalOffset(element: ElementRef): number{
+    if(!element){
+      return 0;
+    }
+    let totalOffset = 0;
+    let current = element.nativeElement;
+    while(current.offsetParent != null){
+      totalOffset += current.offsetTop;
+      current = current.offsetParent;
+    }
+    return totalOffset;
+  }
+
+  private isElementInsideWindow(element: ElementRef, scrollContainer: ElementRef, scrollContainerOffset: number, elementHeight: number, elementOffsetTop: number) {
     const scrollTop = this.windowService.scrollTop;
     const viewportHeight = this.windowService.viewportHeight;
 
     // target bottom edge is below window top edge && target top edge is above window bottom edge
     // if target has a container, don't check for thresholds on the window
     if (scrollContainer != null) {
-      if(element.nativeElement.offsetParent !== scrollContainer?.nativeElement){
-        throw new Error("scroll-container has to be positioned (for example by setting position: relative)")
-      }
       // element has to be inside the portion of the container that is visible
-      const containerOffset = this.windowService.getElementOffsetTop(scrollContainer);
       const containerHeight = this.windowService.getElementHeight(scrollContainer);
       const containerScrollTop = this.windowService.getElementScrollTop(scrollContainer);
       // < 0: container is "above" the screen
       // > 0: container is on or below the screen
-      const distanceToContainer = containerOffset - scrollTop;
+      const distanceToContainer = scrollContainerOffset - scrollTop;
       const visibleContainerHeight = Math.min(viewportHeight - distanceToContainer, containerHeight);
       // < 0: it is too far down to see
       if (visibleContainerHeight < 0){
         return false;
       }
       // elementOffsetTop is a "global" value so we have to calculate the offset _inside_ the container
-      const relativeElementOffset = elementOffsetTop;
+      const relativeElementOffset = this.getTotalOffset(element);
       // now we need figure out which scrolled _part_ of the container is visible
-      return relativeElementOffset + elementHeight > containerScrollTop
-        && relativeElementOffset < containerScrollTop + visibleContainerHeight;
+      return (relativeElementOffset + elementHeight) > (scrollContainerOffset + containerScrollTop)
+        && relativeElementOffset < (scrollContainerOffset + containerScrollTop + visibleContainerHeight);
     }
 
     return elementOffsetTop + elementHeight > scrollTop + this.thresholdTop
